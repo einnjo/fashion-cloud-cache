@@ -16,6 +16,7 @@
     },
     "devDependencies": {
         "@types/express": "^4.17.11",
+        "@types/http-errors": "^1.8.0",
         "@types/node": "15.0.1",
         "@types/tap": "^15.0.1",
         "@typescript-eslint/eslint-plugin": "^4.22.0",
@@ -35,6 +36,8 @@
         "dotenv": "^9.0.2",
         "envalid": "^7.1.0",
         "express": "^4.17.1",
+        "express-openapi": "^8.0.0",
+        "http-errors": "^1.8.0",
         "pino": "^6.11.3"
     },
     "description": "Fashion Cloud's Cache API"
