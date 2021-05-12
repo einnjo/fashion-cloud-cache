@@ -29,6 +29,10 @@ export class CacheService {
         return found!.value;
     }
 
+    async upsertKey(key: string, value: string): Promise<void> {
+        await this.cache.upsert(key, value);
+    }
+
     private randomString(): string {
         return new Date().getTime().toString();
     }

@@ -8,9 +8,9 @@ import { CacheService } from '../../../../../services/cache.js';
 import { Application } from 'express';
 import { TTLValue } from '../../../../../cache/cache.js';
 
-let app: Application;
+tap.test('keys.getKeyById', (t) => {
+    let app: Application;
 
-tap.test('/v1/keys/malaguena', (t) => {
     t.before(async () => {
         const fixture = new Map<string, TTLValue>();
         fixture.set('existing', {
@@ -31,6 +31,27 @@ tap.test('/v1/keys/malaguena', (t) => {
         t.equal(result.statusCode, 200, 'Response code is OK');
         t.equal(result.body.key, key);
         t.equal(result.body.value, 'existingValue');
+    });
+
+    t.end();
+});
+
+tap.test('keys.upsert', (t) => {
+    let app: Application;
+    t.before(async () => {
+        const cache = new InMemoryCache(100);
+        const logger = CreateLogger();
+        const cacheService = new CacheService({ logger, cache });
+        app = createApp({ logger, cacheService });
+    });
+    t.test('Upserts a key', async (t) => {
+        const key = 'newKey';
+        const value = 'newValue';
+        const result = await supertest(app)
+            .put(`/v1/keys/${key}`)
+            .set('Accept', 'application/json')
+            .send({ value });
+        t.equal(result.statusCode, 204, 'Response code is No Content');
     });
 
     t.end();

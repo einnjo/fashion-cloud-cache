@@ -1,4 +1,4 @@
-import { isBefore } from 'date-fns';
+import { addSeconds, isBefore } from 'date-fns';
 import { NextFunction, Request, Response } from 'express';
 
 type ExpressAsyncHandler = (req: Request, res: Response) => Promise<unknown>;
@@ -23,4 +23,13 @@ export function asyncHandler(handler: ExpressAsyncHandler) {
  */
 export function dateIsInPast(date: Date): boolean {
     return isBefore(date, new Date());
+}
+
+/**
+ * Returns a new date "seconds" seconds into the future.
+ * @param seconds
+ * @returns
+ */
+export function dateNowPlusSeconds(seconds: number): Date {
+    return addSeconds(new Date(), seconds);
 }

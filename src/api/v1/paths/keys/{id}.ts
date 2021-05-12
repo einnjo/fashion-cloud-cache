@@ -30,3 +30,22 @@ GET.apiDoc = {
         },
     },
 };
+
+export const PUT: Operation = asyncHandler(async function getById(req: Request, res: Response) {
+    const cacheService = req.app.locals.cacheService as CacheService;
+    const key = req.params.id;
+    await cacheService.upsertKey(key, req.body.value);
+
+    return res.status(204).json();
+});
+
+PUT.apiDoc = {
+    description: 'Upserts a new key in the cache',
+    tags: ['keys'],
+    operationId: 'keys.upsert',
+    responses: {
+        204: {
+            description: 'Successfull Empty Response',
+        },
+    },
+};

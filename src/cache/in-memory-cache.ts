@@ -1,3 +1,4 @@
+import { dateNowPlusSeconds } from '../util.js';
 import { Cache, TTLValue } from './cache';
 
 type CacheData = Map<string, TTLValue>;
@@ -14,7 +15,8 @@ export class InMemoryCache extends Cache {
     }
 
     async upsert(key: string, value: string): Promise<void> {
-        const ttlValue = { value, expiresAt: new Date().toISOString() };
+        const expiresAt = dateNowPlusSeconds(this.ttlSeconds).toISOString();
+        const ttlValue = { value, expiresAt };
         this.data.set(key, ttlValue);
     }
 
