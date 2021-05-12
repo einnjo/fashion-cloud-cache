@@ -1,7 +1,8 @@
 import { createApp } from './app';
+import { config } from './config';
 
 const app = createApp();
 
-app.listen(3000, '127.0.0.1', () => {
-    console.log(`App listening at 127.0.0.1:3000`);
+app.listen(config.PORT, config.HOST, () => {
+    console.log(`App listening at ${config.HOST}:${config.PORT}`);
 });
