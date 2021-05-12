@@ -37,6 +37,10 @@ export class CacheService {
         await this.cache.delete(key);
     }
 
+    async deleteAllKeys(): Promise<void> {
+        await this.cache.purge();
+    }
+
     private randomString(): string {
         return new Date().getTime().toString();
     }
