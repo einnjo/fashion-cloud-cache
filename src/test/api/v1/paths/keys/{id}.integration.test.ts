@@ -56,3 +56,28 @@ tap.test('keys.upsert', (t) => {
 
     t.end();
 });
+
+tap.test('keys.deleteById', (t) => {
+    let app: Application;
+    t.before(async () => {
+        const fixture = new Map<string, TTLValue>();
+        fixture.set('existing', {
+            value: 'existingValue',
+            expiresAt: new Date(2999, 1, 1).toISOString(),
+        });
+        const inMemoryCache = new InMemoryCache(100, fixture);
+
+        const logger = CreateLogger();
+        const cacheService = new CacheService({ logger, cache: inMemoryCache });
+        app = createApp({ logger, cacheService });
+    });
+    t.test('Deletes a key', async (t) => {
+        const key = 'newKey';
+        const result = await supertest(app)
+            .delete(`/v1/keys/${key}`)
+            .set('Accept', 'application/json');
+        t.equal(result.statusCode, 204, 'Response code is No Content');
+    });
+
+    t.end();
+});

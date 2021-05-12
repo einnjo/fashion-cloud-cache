@@ -33,6 +33,10 @@ export class CacheService {
         await this.cache.upsert(key, value);
     }
 
+    async deleteKey(key: string): Promise<void> {
+        await this.cache.delete(key);
+    }
+
     private randomString(): string {
         return new Date().getTime().toString();
     }

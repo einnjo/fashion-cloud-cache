@@ -49,3 +49,25 @@ PUT.apiDoc = {
         },
     },
 };
+
+export const DELETE: Operation = asyncHandler(async function deleteById(
+    req: Request,
+    res: Response,
+) {
+    const cacheService = req.app.locals.cacheService as CacheService;
+    const key = req.params.id;
+    await cacheService.deleteKey(key);
+
+    return res.status(204).json();
+});
+
+PUT.apiDoc = {
+    description: 'Deletes a specific key from the cache',
+    tags: ['keys'],
+    operationId: 'keys.deleteById',
+    responses: {
+        204: {
+            description: 'Successfull Empty Response',
+        },
+    },
+};
