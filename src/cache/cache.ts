@@ -8,6 +8,7 @@ export abstract class Cache {
     }
 
     abstract get(key: string): Promise<TTLValue | undefined>;
+    abstract getMany(skip: number, take: number): Promise<Array<[string, TTLValue]>>;
     abstract upsert(key: string, value: string): Promise<void>;
     abstract delete(key: string): Promise<void>;
     abstract purge(): Promise<void>;

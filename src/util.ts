@@ -33,3 +33,39 @@ export function dateIsInPast(date: Date): boolean {
 export function dateNowPlusSeconds(seconds: number): Date {
     return addSeconds(new Date(), seconds);
 }
+
+/**
+ * Takes "take" map entries after skipping "skip" map entries.
+ * @param map
+ * @param skip
+ * @param take
+ * @returns
+ */
+export function takeMapEntries<K, V>(map: Map<K, V>, skip: number, take: number): Array<[K, V]> {
+    if (map.size === 0) {
+        return [];
+    }
+
+    const entries = map.entries();
+
+    let skipped = 0;
+    let done = false;
+    while (skipped < skip && !done) {
+        skipped++;
+        const next = entries.next();
+        done = next.done ?? true;
+    }
+
+    let taken = 0;
+    const takenEntries = [];
+    while (taken < take && !done) {
+        taken++;
+        const next = entries.next();
+        if (next.value != undefined) {
+            takenEntries.push(next.value);
+        }
+        done = next.done ?? true;
+    }
+
+    return takenEntries;
+}

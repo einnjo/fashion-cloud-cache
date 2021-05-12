@@ -1,4 +1,4 @@
-import { dateNowPlusSeconds } from '../util.js';
+import { dateNowPlusSeconds, takeMapEntries } from '../util.js';
 import { Cache, TTLValue } from './cache';
 
 type CacheData = Map<string, TTLValue>;
@@ -12,6 +12,12 @@ export class InMemoryCache extends Cache {
 
     async get(key: string): Promise<TTLValue | undefined> {
         return this.data.get(key);
+    }
+
+    async getMany(skip: number, take: number): Promise<Array<[string, TTLValue]>> {
+        const entries = takeMapEntries(this.data, skip, take);
+
+        return entries;
     }
 
     async upsert(key: string, value: string): Promise<void> {

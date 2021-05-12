@@ -24,3 +24,42 @@ DELETE.apiDoc = {
         },
     },
 };
+
+type GetManyQuery = { query: { skip?: number; take?: number } };
+
+export const GET: Operation = asyncHandler(async function getMany(
+    req: Request & GetManyQuery,
+    res: Response,
+) {
+    const cacheService = req.app.locals.cacheService as CacheService;
+    const skip = req.query.skip ?? 0;
+    const take = req.query.take ?? 10;
+    const keys = await cacheService.getKeys(skip, take);
+
+    return res.status(200).json({ data: keys });
+});
+
+GET.apiDoc = {
+    description: 'Gets a list of keys in the cache',
+    tags: ['keys'],
+    operationId: 'keys.getMany',
+    parameters: [
+        {
+            name: 'skip',
+            in: 'query',
+            description: 'The number of keys to skip before taking',
+            schema: { type: 'integer' },
+        },
+        {
+            name: 'take',
+            in: 'query',
+            description: 'The number of keys to take after skipping',
+            schema: { type: 'integer' },
+        },
+    ],
+    responses: {
+        200: {
+            description: 'A list of keys in the cache',
+        },
+    },
+};
