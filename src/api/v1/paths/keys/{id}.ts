@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 import { Operation } from 'express-openapi';
-import { NotImplemented } from 'http-errors';
+import { CacheService } from '../../../../services/cache.js';
 
-import { asyncHandler } from '../../../../util.js';
+import { asyncHandler } from '../../../../util';
 
 export const parameters = [
     {
@@ -12,8 +12,12 @@ export const parameters = [
     },
 ];
 
-export const GET: Operation = asyncHandler(async function getById(_req: Request, _res: Response) {
-    throw new NotImplemented();
+export const GET: Operation = asyncHandler(async function getById(req: Request, res: Response) {
+    const cacheService = req.app.locals.cacheService as CacheService;
+    const key = req.params.id;
+    const value = await cacheService.getKey(key);
+
+    return res.status(200).json({ key, value });
 });
 
 GET.apiDoc = {
