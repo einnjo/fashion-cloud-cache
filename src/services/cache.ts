@@ -28,6 +28,9 @@ export class CacheService {
 
         this.logger.info('Cache hit');
 
+        // Refresh ttl
+        await this.upsertKey(key, found!.value);
+
         return found!.value;
     }
 
