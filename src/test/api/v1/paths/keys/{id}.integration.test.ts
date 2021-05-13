@@ -3,26 +3,26 @@ import supertest from 'supertest';
 
 import { createApp } from '../../../../../app';
 import { CreateLogger } from '../../../../../logger.js';
-import { InMemoryCache } from '../../../../../cache/in-memory-cache.js';
 import { CacheService } from '../../../../../services/cache.js';
 import { Application } from 'express';
 import { TTLValue } from '../../../../../cache/cache.js';
+import { createInMemoryCache } from '../../../../../cache/in-memory-cache.unit.test.js';
 
 tap.test('keys.getKeyById', (t) => {
     let app: Application;
 
     t.before(async () => {
-        const fixture = new Map<string, TTLValue>();
-        fixture.set('existing', {
+        const data = new Map<string, TTLValue>();
+        data.set('existing', {
             value: 'existingValue',
             expiresAt: new Date(2999, 1, 1).toISOString(),
         });
-        const inMemoryCache = new InMemoryCache(100, fixture);
-
+        const cache = createInMemoryCache({ data });
         const logger = CreateLogger();
-        const cacheService = new CacheService({ logger, cache: inMemoryCache });
+        const cacheService = new CacheService({ logger, cache });
         app = createApp({ logger, cacheService });
     });
+
     t.test('Returns the value of a key when it exists', async (t) => {
         const key = 'existing';
         const result = await supertest(app)
@@ -39,7 +39,7 @@ tap.test('keys.getKeyById', (t) => {
 tap.test('keys.upsert', (t) => {
     let app: Application;
     t.before(async () => {
-        const cache = new InMemoryCache(100);
+        const cache = createInMemoryCache();
         const logger = CreateLogger();
         const cacheService = new CacheService({ logger, cache });
         app = createApp({ logger, cacheService });
@@ -65,7 +65,7 @@ tap.test('keys.deleteById', (t) => {
             value: 'existingValue',
             expiresAt: new Date(2999, 1, 1).toISOString(),
         });
-        const inMemoryCache = new InMemoryCache(100, fixture);
+        const inMemoryCache = createInMemoryCache({ data: fixture });
 
         const logger = CreateLogger();
         const cacheService = new CacheService({ logger, cache: inMemoryCache });

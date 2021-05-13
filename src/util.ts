@@ -69,3 +69,14 @@ export function takeMapEntries<K, V>(map: Map<K, V>, skip: number, take: number)
 
     return takenEntries;
 }
+
+/**
+ * A promise that resolves after "millis" milliseconds
+ * @param ms
+ * @returns
+ */
+export async function sleep(millis: number) {
+    return new Promise((resolve) => {
+        setTimeout(resolve, millis);
+    });
+}

@@ -3,15 +3,15 @@ import supertest from 'supertest';
 
 import { createApp } from '../../../../../app';
 import { CreateLogger } from '../../../../../logger.js';
-import { InMemoryCache } from '../../../../../cache/in-memory-cache.js';
 import { CacheService } from '../../../../../services/cache.js';
 import { Application } from 'express';
 import { TTLValue } from '../../../../../cache/cache.js';
+import { createInMemoryCache } from '../../../../../cache/in-memory-cache.unit.test.js';
 
 tap.test('keys.deleteAll', (t) => {
     let app: Application;
     t.before(async () => {
-        const cache = new InMemoryCache(100);
+        const cache = createInMemoryCache();
         const logger = CreateLogger();
         const cacheService = new CacheService({ logger, cache });
         app = createApp({ logger, cacheService });
@@ -27,17 +27,17 @@ tap.test('keys.deleteAll', (t) => {
 tap.test('keys.getMany', (t) => {
     let app: Application;
     t.before(async () => {
-        const fixture = new Map<string, TTLValue>();
+        const data = new Map<string, TTLValue>();
         for (let i = 0; i < 100; i++) {
-            fixture.set('key-' + i, {
+            data.set('key-' + i, {
                 value: 'value-' + i,
                 expiresAt: new Date(2999, 1, 1).toISOString(),
             });
         }
-        const inMemoryCache = new InMemoryCache(100, fixture);
+        const cache = createInMemoryCache({ data });
 
         const logger = CreateLogger();
-        const cacheService = new CacheService({ logger, cache: inMemoryCache });
+        const cacheService = new CacheService({ logger, cache });
         app = createApp({ logger, cacheService });
     });
     t.test('Gets many keys', async (t) => {
