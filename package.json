@@ -6,7 +6,7 @@
     "scripts": {
         "prebuild": "rimraf dist",
         "build": "tsc",
-        "start": "node dist/index.js | pino-pretty-min",
+        "start": "node dist/index.js | pino-pretty",
         "dev": "tsc-watch --onSuccess 'yarn start'",
         "pretest": "yarn build",
         "test": "tap --no-cov dist/**/*.test.js",
@@ -27,7 +27,7 @@
         "eslint-config-prettier": "^8.3.0",
         "eslint-plugin-prettier": "^3.4.0",
         "husky": "^6.0.0",
-        "pino-pretty-min": "^0.3.2",
+        "pino-pretty": "^4.8.0",
         "prettier": "^2.2.1",
         "rimraf": "^3.0.2",
         "supertest": "^6.1.3",
