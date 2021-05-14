@@ -22,7 +22,7 @@ export class MongoCache extends Cache {
     }
 
     public async initialize(): Promise<void> {
-        await this.mongo.dropCollection(this.collectionName);
+        await this.mongo.dropDatabase();
         await this.mongo.createCollection(this.collectionName);
         await this.collection.createIndex({ key: 1 }, { unique: true });
         await this.collection.createIndex({ expiredAt: 1 });
