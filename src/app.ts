@@ -6,6 +6,7 @@ import P from 'pino';
 import { apiDoc } from './api/v1/api-doc';
 import { errorMiddleware } from './middleware/error.js';
 import { loggerMiddleware } from './middleware/logger.js';
+import { notFoundMiddleware } from './middleware/not-found.js';
 import { CacheService } from './services/cache.js';
 
 const PATH_TO_API_PATHS = path.join(__dirname, 'api', 'v1', 'paths');
@@ -24,6 +25,7 @@ export function createApp(options: { logger: P.Logger; cacheService: CacheServic
         paths: PATH_TO_API_PATHS,
     });
 
+    app.use(notFoundMiddleware);
     app.use(errorMiddleware);
 
     app.locals.logger = options.logger;
