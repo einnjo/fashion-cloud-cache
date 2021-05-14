@@ -1,5 +1,8 @@
 export type TTLValue = { value: string; expiresAt: string };
-
+export enum CacheEvictionStrategies {
+    LEAST_RECENTLY_USED = 'LEAST_RECENTLY_USED',
+    MOST_RECENTLY_USED = 'MOST_RECENTLY_USED',
+}
 export abstract class Cache {
     public readonly ttlSeconds: number;
     public readonly maxCapacity: number;
