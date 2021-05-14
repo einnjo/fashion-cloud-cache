@@ -15,7 +15,7 @@ export const DELETE: Operation = asyncHandler(async function deleteAll(
 });
 
 DELETE.apiDoc = {
-    description: 'Deletes all entries from the cache',
+    summary: 'Deletes all entries from the cache',
     tags: ['keys'],
     operationId: 'keys.deleteAll',
     responses: {
@@ -40,7 +40,7 @@ export const GET: Operation = asyncHandler(async function getMany(
 });
 
 GET.apiDoc = {
-    description: 'Gets a list of keys in the cache',
+    summary: 'Gets a list of keys in the cache',
     tags: ['keys'],
     operationId: 'keys.getMany',
     parameters: [
@@ -48,13 +48,13 @@ GET.apiDoc = {
             name: 'skip',
             in: 'query',
             description: 'The number of keys to skip before taking',
-            schema: { type: 'integer' },
+            type: 'integer',
         },
         {
             name: 'take',
             in: 'query',
             description: 'The number of keys to take after skipping',
-            schema: { type: 'integer' },
+            type: 'integer',
         },
     ],
     responses: {
