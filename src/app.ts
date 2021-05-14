@@ -2,6 +2,7 @@ import Express, { Application, json } from 'express';
 import { initialize as initializeOpenApi } from 'express-openapi';
 import path from 'path';
 import P from 'pino';
+import swaggerUi from 'swagger-ui-express';
 
 import { apiDoc } from './api/v1/api-doc';
 import { errorMiddleware } from './middleware/error.js';
@@ -23,8 +24,17 @@ export function createApp(options: { logger: P.Logger; cacheService: CacheServic
         app,
         apiDoc,
         paths: PATH_TO_API_PATHS,
+        enableObjectCoercion: true,
+        validateApiDoc: true,
+        exposeApiDocs: true,
+        docsPath: '/swagger.json',
     });
 
+    app.use(
+        '/v1/swagger-ui',
+        swaggerUi.serve,
+        swaggerUi.setup(undefined, { swaggerUrl: '/v1/swagger.json' }),
+    );
     app.use(notFoundMiddleware);
     app.use(errorMiddleware);
 
