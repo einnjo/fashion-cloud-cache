@@ -4,6 +4,7 @@ import path from 'path';
 import P from 'pino';
 
 import { apiDoc } from './api/v1/api-doc';
+import { loggerMiddleware } from './middleware/logger.js';
 import { CacheService } from './services/cache.js';
 
 const PATH_TO_API_PATHS = path.join(__dirname, 'api', 'v1', 'paths');
@@ -13,6 +14,8 @@ export function createApp(options: { logger: P.Logger; cacheService: CacheServic
 
     // Adds support for JSON body
     app.use(json());
+
+    app.use(loggerMiddleware(options.logger));
 
     initializeOpenApi({
         app,
