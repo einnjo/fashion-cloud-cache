@@ -1,7 +1,13 @@
 export type TTLValue = { value: string; expiresAt: string };
+
 export enum CacheEvictionStrategies {
     LEAST_RECENTLY_USED = 'LEAST_RECENTLY_USED',
     MOST_RECENTLY_USED = 'MOST_RECENTLY_USED',
+}
+
+export enum CacheKinds {
+    IN_MEMORY = 'IN_MEMORY',
+    MONGO = 'MONGO',
 }
 export abstract class Cache {
     public readonly ttlSeconds: number;
@@ -12,6 +18,7 @@ export abstract class Cache {
         this.maxCapacity = options.maxCapacity;
     }
 
+    abstract initialize(): Promise<void>;
     abstract size(): Promise<number>;
     abstract get(key: string): Promise<TTLValue | undefined>;
     abstract getMany(skip: number, take: number): Promise<Array<[string, TTLValue]>>;

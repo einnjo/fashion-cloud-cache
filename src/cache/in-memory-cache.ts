@@ -18,6 +18,8 @@ export class InMemoryCache extends Cache {
         this.evictionStrategy = options.evictionStrategy;
     }
 
+    async initialize(): Promise<void> {}
+
     async size(): Promise<number> {
         return this.data.size;
     }
