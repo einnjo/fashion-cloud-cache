@@ -1,5 +1,13 @@
 # Fashion Cloud's Cache API
 
+## Live Documentation
+
+This project exposes and endpoint with live API [documentation](https://swagger.io/tools/swagger-ui/).
+
+```
+http://localhost:3000/v1/swagger-ui
+```
+
 ## Configuration
 
 This projects uses [DotEnv](https://github.com/motdotla/dotenv#readme) and [Envalid](https://github.com/af/envalid#readme) for managing configuration.
